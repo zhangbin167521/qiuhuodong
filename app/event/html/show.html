@@ -1,0 +1,165 @@
+{template header}
+<div class="midder">
+  <div class="mc">
+    <div class="cleft">
+      <div class="bbox">
+        <h1>{$strEvent[title]}</h1>
+        <div class="bc event">
+          <div class="photo">
+			<a href="">
+              <img title="点击看大图" src="<!--{if $strEvent[poster]}-->{php echo tsXimg($strEvent[poster],'event',220,200,$strEvent[path])}<!--{else}-->{SITE_URL}public/images/event_dft.jpg<!--{/if}-->" width="220" height="150">
+            </a>
+          </div>
+
+          <div class="info">
+            
+开始时间: {$strEvent[time_start]}
+            <br>
+            
+结束时间: {$strEvent[time_end]}
+            <br>
+            
+地点: {$strEvent[address]}
+            <br>
+            
+发起人: 
+            <a href="{tsUrl('user','space',array('id'=>$strEvent[user][userid]))}">{$strEvent[user][username]}</a>
+            <br>        
+类型: 
+            {$strEvent[type][typename]}
+            <br>
+            
+{$strEvent[count_userwish]}人感兴趣  &nbsp;  {$strEvent[count_userdo]}人参加
+
+          </div>
+		  <!--{if $TS_USER[user][userid] == '' || $isEventUser==''}-->
+          <div class="tar">
+            <a class="btn" href="javascript:void('0');" onclick="userDoWish('{$strEvent[eventid]}','1');">我感兴趣</a>
+            <a class="btn btn-success" href="javascript:void('0');" onclick="userDoWish('{$strEvent[eventid]}','0');">我要参加</a>
+          </div>
+		  <!--{else}-->
+		  <div class="tar">
+		  <!--{if $strEventUser[status]=='1'}-->
+          <span class="gact"> <a class="btn btn-success" href="javascript:void('0');" onclick="doEvent('{$strEvent[eventid]}','{$TS_USER[user][userid]}');">我要参加</a></span>
+          <!--{else}-->
+          <span class="gact">
+             <a class="btn"  href="javascript:void('0');" onclick="cancelEvent('{$strEvent[eventid]}','{$TS_USER[user][userid]}');">我不去了</a>
+		  </span>
+		  <!--{/if}-->
+		  </div>
+          <!--{/if}-->
+
+        </div>
+      </div>
+      <div class="bbox">
+        <h2>活动介绍</h2>
+        <div class="bc">
+          <p>{$strEvent[content]}</p>
+          <div style="text-align:right;">
+		  <!--{if $TS_USER[user][userid] == $strEvent[userid] || $TS_USER[user][isadmin]=='1'}-->
+             <a href="{tsUrl('event','do',array('ts'=>'base','eventid'=>$strEvent[eventid]))}">修改</a> 
+          <!--{/if}-->
+          <!--{if $TS_USER[user][isadmin]=='1'}-->
+            <a href="{tsUrl('event','do',array('ts'=>'isaudit','eventid'=>$strEvent[eventid]))}"><!--{if $strEvent[isaudit]==0}-->审核<!--{else}--><!--{/if}--></a>
+			<a href="{tsUrl('event','do',array('ts'=>'del','eventid'=>$strEvent[eventid]))}" onClick="return confirm('确定删除吗?')">删除</a>
+          <!--{/if}-->
+          </div>
+        </div>
+      </div>
+
+      <div class="bbox">
+        <h2>
+          参加这个活动的成员
+
+          <span class="pl">
+            ( 
+            <a href="">全部{$strEvent[count_userdo]}人</a>
+             )
+          </span>
+        </h2>
+        <div class="bc">
+          <!--{loop $arrDoUser $key $item}-->
+             <a class="nbg" href="{tsUrl('user','space',array('id'=>$item[userid]))}"><img  class="m_sub_img" src="{$item[face]}" alt="{$item[username]}" width="48" height="48" /></a>
+          <!--{/loop}-->
+        </div>
+      </div>
+	  
+	  
+	  <div class="bbox">
+        <h2>你的回应</h2>
+        <div class="bc">
+          <ul class="comment">
+            <!--{loop $arrEventComment $key $item}-->
+              <li class="clearfix">
+                <div class="user-face">
+                  <a href="{tsUrl('user','space',array('id'=>$item[user][userid]))}"><img title="{$item[user][username]}" alt="{$item[user][username]}" src="{$item[user][face]}" class="pil" width="48" height="48"></a>
+                </div>
+                <div class="reply-doc">
+                   <h4>{php echo date('Y-m-d H:i:s',$item[addtime])}
+                     <a href="{tsUrl('user','space',array('id'=>$item[userid]))}">{$item[user][username]}</a>
+                   </h4>
+                   <p>{$item[content]}</p>
+		           <!--签名-->
+		           <!--{if $item[user][signed] != ''}-->
+		             <div class="signed">{$item[user][signed]}</div>
+		           <!--{/if}-->
+	
+	               <!--{if $TS_USER[user][userid] == $strEvent[userid]}-->
+                   <div class="group_banned">
+                      <span><a href="{tsUrl('event','do',array('ts'=>'delcomment','commentid'=>$item[commentid]))}" onClick="return confirm('确定删除吗?')">删除</a>
+                      </span>
+                   </div>
+	               <!--{/if}-->
+	               <!--回复评论-->
+	               <div></div>	
+                  </div>
+                </li>
+               <!--{/loop}-->
+          </ul>
+          <div class="page">{$pageUrl}</div>
+          <!--{if $TS_USER[user][userid] == ''}-->
+            <div style="font-size:14px;padding:40px 0;text-align:center;">请登录后回应本活动^_^</div>
+          <!--{else}-->
+            <div>
+               <form method="POST" action="{SITE_URL}index.php?app=event&ac=do&ts=comment">
+                  <textarea id="editor_mini" style="width:100%;height:100px;" name="content"></textarea><br>
+                   <input type="hidden" name="eventid" value="{$strEvent[eventid]}" />
+                    <input class="btn btn-success" type="submit" value="加上去">
+                </form>
+            </div>
+          <!--{/if}-->
+        </div>
+      </div>
+    </div>
+    <div class="cright">
+      <div class="bbox">
+        <div class="bc">
+		  <a href="{tsUrl('event','type',array(typeid=>$strEvent[type][typeid]))}">更多{$strEvent[type][typename]}活动</a>
+        </div>
+      </div>
+      <div class="bbox">
+        <h2>
+          对这个活动感兴趣的成员
+          <span class="pl">
+            ( 
+            <a href="">全部{$strEvent[count_userwish]}人</a>
+             )
+          </span>
+        </h2>
+        <div class="bc">
+          <!--{loop $arrWishUser $key $item}-->
+            <a class="nbg" href="{tsUrl('user','space',array('id'=>$item[userid]))}"><img alt="{$item[username]}" class="m_sub_img" src="{$item[face]}" alt="{$item[username]}" width="48" height="48"></a>
+          <!--{/loop}-->
+        </div>
+      </div>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!--加载编辑器-->
+<script src="{SITE_URL}public/js/editor/xheditor/xheditor.js" type="text/javascript"></script>
+<script src="{SITE_URL}public/js/editor/xheditor/loadeditor.js" type="text/javascript"></script>
+{template footer}

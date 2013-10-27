@@ -1,0 +1,81 @@
+{template header}
+<script language="javascript" type="text/javascript" src="{SITE_URL}public/js/date/WdatePicker.js?4.72"></script>
+<div class="midder">
+  <div class="mc">
+    <div class="bbox">
+      <h1>
+发布活动
+</h1>
+      <div class="bc">
+        <form method="POST" action="{SITE_URL}index.php?app=event&ac=do&ts=add" enctype="multipart/form-data">
+          <table width="100%">
+            <tbody>
+              <tr>
+                <td width="130">标题: </td>
+                <td>
+                  <input style="padding:3px 0;width:400px;" type="text" value="" maxlength="100" size="50" name="title" gtbfieldid="2">
+                </td>
+              </tr>
+              <tr>
+                <td>类型:</td>
+                <td>
+                  <select name="typeid">
+                    <!--{loop $arrType $key $item}-->
+                        <option value="{$item[typeid]}">{$item[typename]}</option>
+                    <!--{/loop}-->
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>开始时间：</td>
+                <td>
+                  <input name="starttime" readonly="" value="" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'2013-10-12 00:00',maxDate:'2013-10-19 00:00'})">
+                   * 7天以内。
+
+                </td>
+              </tr>
+              <tr>
+                <td>结束时间：</td>
+                <td>
+                  <input class="date_input" name="time_end" value="" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'{php echo date('Y-m-d')} 00:00',maxDate:'{php echo date('Y-m-d',time()+2502000)} 00:00'})"  />
+                   * 30天以内。
+                </td>
+              </tr>
+              <tr>
+                <td>地点：</td>
+                <td>
+                  <input style="width:300px;padding:2px;" name="address">
+                   (例如：北京市朝阳区三里屯工人体育馆)
+
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">
+内容：
+</td>
+                <td>
+                  <textarea style="width:80%;height:150px;" id="tseditor" name="content"></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td>活动海报：</td>
+                <td>
+                  <input type="file" name="photo">
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <input class="btn btn-success" type="submit" value="发布活动">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{template footer}

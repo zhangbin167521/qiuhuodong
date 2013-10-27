@@ -1,0 +1,13 @@
+{php include template("admin/header");}
+
+<!--main-->
+<div class="midder">
+
+{php include template("admin/menu");}
+</div>
+<!--{if $install == '1'}-->
+ <form method="POST" action="{SITE_URL}index.php?app=event&ac=admin&mg=install" enctype="multipart/form-data">
+ <input class="btn btn-success" type="submit" value="安装APP">
+ </form>
+ <!--{/if}-->
+{php include template("admin/footer");}

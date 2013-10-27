@@ -1,0 +1,56 @@
+{template header}
+<link type="text/css" rel="stylesheet" href="{SITE_URL}app/{$app}/skins/{$skin}/index.css" />
+<div class="midder">
+
+<div class="mc">
+<div class="bbox leftbg">
+
+
+<div class="leftmenu">
+<h1><a href="{tsUrl('event')}">活动</a></h1>
+<ul>
+<li class="current"><a href="{tsUrl('event')}">全部</a></li>
+<!--{loop $arrEventType[list] $key $item}-->
+<li><a href="{tsUrl('event','type',array(typeid=>$item[typeid]))}">{$item[typename]}</a></li>
+<!--{/loop}-->
+</ul>
+</div>
+
+<div class="leftbox">
+
+<div class="tar pd10"><a class="btn btn-success" href="{SITE_URL}index.php?app=event&ac=add">发布活动</a></div>
+
+<div class="eventlist">
+<ul>
+<!--{loop $arrEvent $key $item}-->
+<li>
+<div class="photo">
+<a href="{tsUrl('event','show',array(eventid=>$item[eventid]))}">
+<img class="actimgs" src="<!--{if $item[poster]}-->{php echo tsXimg($item[poster],'event',100,100,$item[path],1)}<!--{else}-->{SITE_URL}public/images/event_dft.jpg<!--{/if}-->"  width="220" height="150">
+</a>
+</div>
+<div class="title">
+<a  href="{tsUrl('event','show',array(eventid=>$item[eventid]))}">{$item[title]}</a> 
+</div>
+<div class="info">
+开始时间：{$item[time_start]}<br>
+结束时间：{$item[time_end]}<br>
+{$item[count_userdo]}人参加 &nbsp; {$item[count_userwish]}人感兴趣
+</div>
+</li>
+
+<!--{/loop}-->
+
+</ul>
+</div>
+
+<div class="clear"></div>
+
+<div class="page">$pageUrl</div>
+
+</div>
+
+</div>
+</div>
+</div>
+{template footer}
